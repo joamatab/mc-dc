@@ -15,9 +15,9 @@ class V2:
 
 def element(e, **kwargs):
     """Utility function used for rendering svg"""
-    s = "<" + e
+    s = f"<{e}"
     for key, value in kwargs.items():
-        s += " {}='{}'".format(key, value)
+        s += f" {key}='{value}'"
     s += "/>\n"
     return s
 
@@ -40,8 +40,16 @@ def make_svg(file, edges, f):
         for y in range(YMIN, YMAX+1):
             is_solid = f(x, y) > 0
             fill_color = ("black" if is_solid else "white")
-            file.write(element("circle", cx=x*scale, cy=y*scale, r=0.05*scale,
-                               style="stroke: black; stoke-width: 1; fill: " + fill_color))
+            file.write(
+                element(
+                    "circle",
+                    cx=x * scale,
+                    cy=y * scale,
+                    r=0.05 * scale,
+                    style=f"stroke: black; stoke-width: 1; fill: {fill_color}",
+                )
+            )
+
     # Draw edges
     for edge in edges:
         file.write(element("line", x1=edge.v1.x*scale, y1=edge.v1.y*scale, x2=edge.v2.x*scale, y2=edge.v2.y*scale,

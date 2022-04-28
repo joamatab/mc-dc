@@ -23,19 +23,25 @@ def dual_contour_3d_find_best_vertex(f, f_normal, x, y, z):
     # There are 4 edges along each of the three axes
     changes = []
     for dx in (0, 1):
-        for dy in (0, 1):
-            if (v[dx, dy, 0] > 0) != (v[dx, dy, 1] > 0):
-                changes.append((x + dx, y + dy, z + adapt(v[dx, dy, 0], v[dx, dy, 1])))
+        changes.extend(
+            (x + dx, y + dy, z + adapt(v[dx, dy, 0], v[dx, dy, 1]))
+            for dy in (0, 1)
+            if (v[dx, dy, 0] > 0) != (v[dx, dy, 1] > 0)
+        )
 
     for dx in (0, 1):
-        for dz in (0, 1):
-            if (v[dx, 0, dz] > 0) != (v[dx, 1, dz] > 0):
-                changes.append((x + dx, y + adapt(v[dx, 0, dz], v[dx, 1, dz]), z + dz))
+        changes.extend(
+            (x + dx, y + adapt(v[dx, 0, dz], v[dx, 1, dz]), z + dz)
+            for dz in (0, 1)
+            if (v[dx, 0, dz] > 0) != (v[dx, 1, dz] > 0)
+        )
 
     for dy in (0, 1):
-        for dz in (0, 1):
-            if (v[0, dy, dz] > 0) != (v[1, dy, dz] > 0):
-                changes.append((x + adapt(v[0, dy, dz], v[1, dy, dz]), y + dy, z + dz))
+        changes.extend(
+            (x + adapt(v[0, dy, dz], v[1, dy, dz]), y + dy, z + dz)
+            for dz in (0, 1)
+            if (v[0, dy, dz] > 0) != (v[1, dy, dz] > 0)
+        )
 
     if len(changes) <= 1:
         return None

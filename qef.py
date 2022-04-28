@@ -55,10 +55,7 @@ class QEF:
         """Finds the point that minimizes the error of this QEF,
         and returns a tuple of the error squared and the point itself"""
         result, residual, rank, s = numpy.linalg.lstsq(self.A, self.b)
-        if len(residual) == 0:
-            residual = self.evaluate(result)
-        else:
-            residual = residual[0]
+        residual = self.evaluate(result) if len(residual) == 0 else residual[0]
         # Result only contains the solution for the unfixed axis,
         # we need to add back all the ones we previously fixed.
         position = []

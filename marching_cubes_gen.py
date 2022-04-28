@@ -1,6 +1,7 @@
 """Reggenerates the 256 cases needed for the 3D Marching Cubes look up table. There's no need to run this,
 the values have already been hard coded into marching_cubes_3d"""
 
+
 # My convention for vertices is:
 VERTICES = [
     (0, 0, 0),
@@ -30,10 +31,7 @@ EDGES = [
     (3, 7),
 ]
 
-EDGES_BY_VERTSET = {}
-for e, (v1, v2) in enumerate(EDGES):
-    EDGES_BY_VERTSET[frozenset([v1, v2])] = e
-
+EDGES_BY_VERTSET = {frozenset([v1, v2]): e for e, (v1, v2) in enumerate(EDGES)}
 # These are the 15 base cases.
 # Each key is the bitwise representation of what is solid
 # Each value is a list of triples indicating what edges are used for that triangle
@@ -220,7 +218,7 @@ for invert in (False, True):  # Invert swaps solid for empty and visa versa
 def test1():
     for bits in range(256):
         verts = set(bits_to_verts(bits))
-        all_edges = set(edge for face in cases[bits] for edge in face)
+        all_edges = {edge for face in cases[bits] for edge in face}
         for edge in all_edges:
             assert sum(v in verts for v in EDGES[edge]) == 1
 

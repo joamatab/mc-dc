@@ -10,11 +10,8 @@ assert os.path.exists(blender_bin)
 deg_to_rad = 0.017453292523928
 
 def blender_render(obj_file, output_render):
-        # Create Blender script for scene we want to render
-        script = ""
         camera = (5.95839, -2.64368, 3.245561), (63.524*deg_to_rad,0.76*deg_to_rad,65.791*deg_to_rad)
-        # Marshall arguments into blender
-        script += "obj_file = {0}\n".format(repr(os.path.abspath(obj_file)))
+        script = "" + "obj_file = {0}\n".format(repr(os.path.abspath(obj_file)))
         script += "output_render = {0}\n".format(repr(os.path.abspath(output_render)))
         script += "camera_location = {0}\n".format(repr(camera[0]))
         script += "camera_rotation = {0}\n".format(repr(camera[1]))
@@ -93,9 +90,8 @@ def blender_render(obj_file, output_render):
         with tempfile.NamedTemporaryFile(delete=False) as f:
                 f.write(script.encode("utf-8"))
         args = [blender_bin,"-P",f.name]
-        if True:
-            # Start blender in "background mode"
-            args.insert(1, "-b")
+        # Start blender in "background mode"
+        args.insert(1, "-b")
         subprocess.check_call(args)
 
 if __name__=="__main__":

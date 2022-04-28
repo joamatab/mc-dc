@@ -82,9 +82,7 @@ def square_function(x, y):
 
 
 def t_shape_function(x, y):
-    if (x, y) in ((0, 0), (0, 1), (0, -1), (1, 0)):
-        return 1
-    return -1
+    return 1 if (x, y) in ((0, 0), (0, 1), (0, -1), (1, 0)) else -1
 
 __all__ = ["marching_cubes_2d"]
 
